@@ -1,12 +1,11 @@
-import './App.css'
+import { useRoutes } from "react-router-dom";
+import { routeList } from "./routes/routeList";
 
-function App() {
 
-  return (
-    <>
-      <h1 className="text-xl font-bold text-red-500">Hello Tailwindcss with react vite</h1>
-    </>
-  )
+const App = () => {
+  const element = useRoutes(routeList);
+  return element;
+  
 }
 
-export default App
+export default App;

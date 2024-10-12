@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities; 
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+/* hero */
+
+
+.hero {
+    width: 100%;
+    min-height: 100vh;
+    background-image: url(../images/landingBackground3.png);
+    background-position: center;
+    background-size: 35%;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    padding: 10px 10%;
+    position: relative;
+}
+
+.container {
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    width: 140px;
+}
+
+.container ul li {
+    display: inline-block;
+    list-style: none;
+    margin: 10px 15px;
+}
+
+.container ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 400;
+}
+
+.login-btn {
+    text-decoration: none;
+    color: #333;
+    margin-right: 15px;
+    font-weight: 400;
+}
+
+.reg-btn {
+    display: inline-block;
+    text-decoration: none;
+    padding: 14px 40px;
+    color: #fff;
+    background-image: linear-gradient(60deg, #D862BC, #fcb0b3);
+    font-size: 14px;
+    border-radius: 30px;
+    border-top-right-radius: 0;
+    transition: transform 0.2s;
+}
+
+.reg-btn:hover {
+    transform: scale(1.05);
+}
+
+.join-btn {
+    display: inline-block;
+    text-decoration: none;
+    padding: 15px 80px;
+    color: #fff;
+    background-image: linear-gradient(60deg, #D862BC, #fcb0b3);
+    font-size: 18px;
+    border-radius: 30px;
+    border-top-right-radius: 0;
+}
+
+.content {
+    margin-top: 10%;
+    max-width: 700px;
+}
+
+.content h1{
+    font-size: 72px;
+    color: #222;
+}
+
+.content p {
+    margin: 10px 0 30px;
+    color: #333;
+    animation-delay: 0.5s;
+}
+
+.content .join-btn {
+    animation-delay: 0.8s;
+    transition: transform 0.2s;
+}
+
+.content .join-btn:hover {
+    transform: scale(1.5);
+}
+
+.model-img {
+    width: 450px;
+    position:absolute;
+    bottom: 0%;
+    right: 14%;
+}
+
+.model-img.animation {
+    animation-delay: 1s;
+}
+
+.animation {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: moveup 0.5s linear forwards;
+}
+
+@keyframes moveup {
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+
+/* carousel or card sliders is using Tailwind */
+
+/* slick carousel */
+
+.slick-slide > div {
+    margin: 0 10px;
+}
