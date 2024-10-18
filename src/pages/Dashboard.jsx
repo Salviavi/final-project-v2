@@ -11,7 +11,7 @@ const Dashboard = () => {
 
     return (
         <div>
-        
+            <h1 className="text-purple-300 rounded-xl">Halo ini dashboard</h1>
         </div>
     );
 };

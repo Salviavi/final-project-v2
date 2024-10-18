@@ -20,6 +20,19 @@ const Landing = () => {
         autoplaySpeed: 1200,
         pauseOnHover: true
       };
+
+      // token
+      const token = localStorage.getItem("access_token");
+
+      // navigate
+      const navigate = useNavigate(); 
+
+      //handle logout
+
+      const handleLogout = () => {
+        localStorage.clear();
+        navigate("/login");
+    };
     
 
     const [categories, setCategories] = useState([]);
@@ -31,8 +44,8 @@ const Landing = () => {
             },
         })
         .then((res) => {
-            console.log(res); // Log the entire response
-            setCategories(res.data.data); // Assuming the data is inside res.data.data
+            console.log(res); 
+            setCategories(res.data.data);
         })
         .catch((err) => {
             console.log(err.response);
@@ -52,13 +65,21 @@ const Landing = () => {
                 <nav className="container">
                     <img src={logo} className="logo" />
                     <ul>
-                        <li><a href="#">Locations</a></li>
-                        <li><a href="#">Activities</a></li>
-                        <li><a href="#">Promos</a></li>
+                        <li><Link to="/locations">Locations</Link></li>
+                        <li><Link to="/activities">Activities</Link></li>
+                        <li><Link to="/promos">Promos</Link></li>
                     </ul>
                     <div>
-                        <a href="#" className="login-btn">Log in</a>
-                        <a href="#" className="reg-btn">Register</a>
+                        {!token ? (
+                        <>
+                            <Link to="/login" className="login-btn">Log in</Link>
+                            <Link to="/register" className="reg-btn">Register</Link>
+                        </>
+                        ) : (
+                            <button className="logout-button" onClick={handleLogout}>Logout</button>
+                        )}
+                        {/* <a href="#" className="login-btn">Log in</a>
+                        <a href="#" className="reg-btn">Register</a> */}
                     </div>
                 </nav>
                 <div className="content">
