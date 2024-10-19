@@ -43,11 +43,19 @@ const Login = () => {
             console.log(response);
             setSuccess("Login successful!");
             const token = response?.data?.token;
-            localStorage.setItem("access_token", token);
-            setError("");
-            setTimeout(() => {
-                navigate("/dashboard");
-            }, 2000);
+            
+            if (token) {
+                localStorage.setItem("access_token", token);
+                // Optionally clear the fields
+                setEmail("");
+                setPassword("");
+                setError("");
+                setTimeout(() => {
+                    navigate("/dashboard");
+                }, 2000);
+            } else {
+                setError("Login failed. Please try again.");
+            }
         })
         .catch((err) => {
             console.log(err.response);

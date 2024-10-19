@@ -1,0 +1,91 @@
+/* Main App */
+.header-dashboard {
+    padding-top: 12px;
+    background: #fff;
+}
+
+.content-dashboard {
+    margin: 24px 16px;
+    padding: 20px;
+}
+
+.trigger-btn-dashboard {
+    font-size: 16px;
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+}
+
+/* Sider */
+.sider-dashboard {
+    height: 100vh;
+    position: sticky !important;
+    left: 0;
+    bottom: 0;
+    top: 0;
+}
+
+.logo {
+    color: #D862BC;
+    margin: 40px 0;
+    font-size: 1.5rem;
+}
+
+.menu-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-weight: 500;
+}
+
+:global(.ant-menu-item-selected) {
+    background-color: #D862BC !important;
+    color: #fff !important;
+}
+
+/* header */
+.header-icon-dashboard {
+    background: #fbced0;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 15px;
+    color: #D862BC;
+    cursor: pointer;
+}
+
+/* button and color */
+:global(.ant-btn:hover) {
+    color: #D862BC !important;
+    border-color: #D862BC;
+}
+
+:global(.ant-btn-primary) {
+    background-color: #D862BC;
+}
+
+:global(.ant-btn-primary:hover) {
+    background-color: #652255 !important;
+    color: #fff !important;
+}
+
+:global(.primary--color) {
+    color: #D862BC !important;
+}
+
+:global(.primary--light--color) {
+    color: #ef95da !important;
+}
+
+:global(.secondary--color) {
+    color: #fdaeeb !important;
+}
+
+:global(.light--color) {
+    color: #fbced0 !important;
+}
+
+:global(.gray--color) {
+    color: #ede0e1 !important;
+}

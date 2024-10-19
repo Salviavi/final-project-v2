@@ -1,22 +1,25 @@
+// Modules
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "../styles/dashboard.module.css";
-import logo from "../images/logoCrop.png";
+
+// Components
 import { Button, Layout } from "antd";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
+import { Flex } from "antd";
 import Sidebar from "../components/Sidebar";
 import CustomHeader from "../components/Header";
-import MainContent from "../components/MainContent";
-import SideContent from "../components/SideContent";
-import { Flex } from "antd";
+
+// Styles
+import styles from "../styles/dashboard.module.css";
 
 const { Sider, Header, Content } = Layout;
-const Dashboard = () => {
+export default function LayoutDashboard({ children }) {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
     <div>
+      <h1 className="text-purple-300 rounded-xl">Halo ini dashboard</h1>
       <Layout>
         <Sider
           theme="light"
@@ -26,7 +29,6 @@ const Dashboard = () => {
           className={styles["sider-dashboard"]}
         >
           <Sidebar />
-
           <Button
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -40,14 +42,14 @@ const Dashboard = () => {
           </Header>
           <Content className={styles["content-dashboard"]}>
             <Flex gap="large">
-              <MainContent />
-              <SideContent />
+              {/* Ini isi content */}
+              <div className="w-full">{children}</div>
+              {/* <MainContent />
+              <SideContent /> */}
             </Flex>
           </Content>
         </Layout>
       </Layout>
     </div>
   );
-};
-
-export default Dashboard;
+}

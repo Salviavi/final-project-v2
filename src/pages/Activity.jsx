@@ -3,15 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo from "../images/logoCrop.png";
 
-const Promo = () => {
+const Activity = () => {
   const [expandedIndices, setExpandedIndices] = useState([]);
-  const [promos, setPromos] = useState([]);
+  const [activities, setActivities] = useState([]);
 
-  console.log(promos);
-  const getPromos = () => {
+  console.log(activities);
+  const getActivities = () => {
     axios
       .get(
-        "https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/promos",
+        "https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/activities",
         {
           headers: {
             apiKey: "24405e01-fbc1-45a5-9f5a-be13afcd757c",
@@ -20,7 +20,7 @@ const Promo = () => {
       )
       .then((res) => {
         console.log(res);
-        setPromos(res.data.data);
+        setActivities(res.data.data);
       })
       .catch((err) => {
         console.log(err.response);
@@ -28,7 +28,7 @@ const Promo = () => {
   };
 
   useEffect(() => {
-    getPromos();
+    getActivities();
   }, []);
 
   // handle read more on product cards
@@ -54,26 +54,6 @@ const Promo = () => {
   const handleLogout = () => {
     localStorage.clear();
     navigate("/login");
-  };
-
-  const handleDelete = (id) => {
-    axios
-      .delete(
-        `https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/delete-promo/${id}`,
-        {
-          headers: {
-            apiKey: "24405e01-fbc1-45a5-9f5a-be13afcd757c",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-      .then((res) => {
-        console.log(res);
-        setCategories(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
   };
 
   return (
@@ -109,7 +89,7 @@ const Promo = () => {
 
       <div>
         <h1 className="text-4xl pl-10 text-violet-600 text-center">
-          We have exclusive promos for you!
+          Pick your own trip activities!
         </h1>
       </div>
 
@@ -117,25 +97,23 @@ const Promo = () => {
       <br />
 
       <div className="bg-gray-100 w-full min-h-screen gap-6 flex-wrap flex justify-center items-center pt-14">
-        {promos.map((promo, index) => {
+        {activities.map((activity, index) => {
           // Calculate discount percentage for each promo
           const discountPercentage =
-            ((promo.minimum_claim_price - promo.promo_discount_price) /
-              promo.minimum_claim_price) *
-            100;
+            ((activity.price - activity.price_discount) / activity.price) * 100;
 
           return (
             <div
-              key={promo.id}
+              key={activity.id}
               className="w-60 p-2 bg-white rounded-xl transform transition-all hover:translate-y-2 duration-300 shadow-lg hover:shadow-2xl mt-4 mb-4 lg:mt-0"
             >
               <img
-                src={promo.imageUrl}
+                src={activity.imageUrls}
                 alt=""
                 className="h-40 object-cover rounded-xl"
               />
               <div className="p-2">
-                <h2 className="font-bold text-lg mb-2">{promo.title}</h2>
+                <h2 className="font-bold text-lg mb-2">{activity.title}</h2>
 
                 <p
                   className={`opacity-70 ${
@@ -144,7 +122,7 @@ const Promo = () => {
                       : "overflow-hidden whitespace-nowrap overflow-ellipsis max-w-full"
                   }`}
                 >
-                  {promo.description}
+                  {activity.description}
                 </p>
 
                 <button
@@ -156,7 +134,7 @@ const Promo = () => {
 
                 <br />
                 <span className="text-xl font-semibold">
-                  {promo.promo_discount_price.toLocaleString("id-ID", {
+                  {activity.price.toLocaleString("id-ID", {
                     style: "currency",
                     currency: "IDR",
                   })}
@@ -165,15 +143,13 @@ const Promo = () => {
 
               <div className="flex items-center gap-2">
                 <span className="text-sm line-through opacity-75">
-                  {promo.minimum_claim_price.toLocaleString("id-ID", {
+                  {activity.price_discount.toLocaleString("id-ID", {
                     style: "currency",
                     currency: "IDR",
                   })}
                 </span>
                 <span>Save {discountPercentage.toFixed(0)}%</span>
               </div>
-
-              {/* <button onClick={() => handleDelete(promo.id)}>Delete</button> */}
             </div>
           );
         })}
@@ -182,4 +158,4 @@ const Promo = () => {
   );
 };
 
-export default Promo;
+export default Activity;
