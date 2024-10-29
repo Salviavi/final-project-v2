@@ -62,7 +62,7 @@ const Landing = () => {
     <div>
       <div className="hero">
         <nav className="container">
-          <img src={logo} className="logo" />
+          <img src={logo} className="logo" alt="Membolang company logo" />
           <ul>
             <li>
               <Link to="/location">Location</Link>
@@ -107,7 +107,11 @@ const Landing = () => {
             Join Now
           </a>
         </div>
-        <img src={mbamba} className="model-img animation" />
+        <img
+          src={mbamba}
+          className="model-img animation"
+          alt="a traveler women wearing hat"
+        />
       </div>
 
       <div className="w-3/4 m-auto">

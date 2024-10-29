@@ -8,7 +8,7 @@ import Location from "../pages/Location";
 import Activity from "../pages/Activity";
 import Promo from "../pages/Promo";
 import CreatePromo from "../pages/CreatePromo";
-import Promos from "../pages/dashboard-pages/Promos";
+import PromosPages from "../pages/dashboard-pages/Promos";
 import ActivitiesPages from "../pages/dashboard-pages/Activities";
 import LocationPages from "../pages/dashboard-pages/Locations";
 
@@ -62,7 +62,7 @@ export const routeList = [
     path: "/promos",
     element: (
       <ProtectedRoute>
-        <Promos />
+        <PromosPages />
       </ProtectedRoute>
     ),
   },
