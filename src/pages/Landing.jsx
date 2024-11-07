@@ -33,6 +33,11 @@ const Landing = () => {
     navigate("/login");
   };
 
+  const handleDashboard = () => {
+    localStorage.clear();
+    navigate("/dashboard");
+  };
+
   const [categories, setCategories] = useState([]);
 
   const getCategories = () => {
@@ -85,9 +90,20 @@ const Landing = () => {
                 </Link>
               </>
             ) : (
-              <button className="logout-button" onClick={handleLogout}>
-                Logout
-              </button>
+              <div className="flex gap-5">
+                <button
+                  onClick={handleDashboard}
+                  className="dashboard-button inline-block text-white text-sm px-5 py-2 transition-transform duration-200 transform bg-gradient-to-r from-[#D862BC] to-[#fcb0b3] hover:scale-105"
+                >
+                  Go to Dashboard
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="logout-button inline-block text-white text-sm px-3 py-1 transition-transform duration-200 bg-red-500 hover:scale-105"
+                >
+                  Logout
+                </button>
+              </div>
             )}
             {/* <a href="#" className="login-btn">Log in</a>
                         <a href="#" className="reg-btn">Register</a> */}

@@ -3,25 +3,52 @@ import LayoutDashboard from "../../components/Layout";
 import { useEffect, useState } from "react";
 import { Button } from "antd";
 import { Modal } from "antd";
+import { Input } from "antd";
+import { Upload } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 
 export default function LocationPages() {
-  const [categoriesData, setCategoriesData] = useState([]);
+  const token = localStorage.getItem("access_token");
+
+  /* I changed categories to locations */
+  const [locationsData, setLocationsData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState({
-    title: "Create Categories",
+    title: "Create Locations",
     data: null,
+    type: "create",
   });
 
-  const showModal = (type = "create") => {
+  /* State data Categories */
+  const [nameLocations, setNameLocations] = useState("");
+  const [fileValueActivities, setFileValueActivities] = useState("");
+  const [fileDataActivities, setFileDataActivities] = useState(null);
+
+  const showModal = (type = "create", data = {}) => {
     setIsModalOpen(true);
     if (type === "create") {
-      setModalData((prev) => ({ ...prev, title: "Create Activities" }));
+      setModalData((prev) => ({
+        ...prev,
+        title: "Create Locations",
+        type: type,
+      }));
     } else if (type === "edit") {
-      setModalData((prev) => ({ ...prev, title: "Edit Activities" }));
+      setModalData((prev) => ({
+        ...prev,
+        title: "Edit Locations",
+        type: type,
+      }));
+      setNameLocations(data?.name || "");
     } else if (type === "read") {
-      setModalData((prev) => ({ ...prev, title: "Activities" }));
+      setModalData((prev) => ({ ...prev, title: "Locations", type: type }));
+      setNameLocations(data?.name || "");
+      console.log(setNameLocations);
     } else if (type === "delete") {
-      setModalData((prev) => ({ ...prev, title: "Delete Activities" }));
+      setModalData((prev) => ({
+        ...prev,
+        title: "Delete Locations",
+        type: type,
+      }));
     }
   };
   const handleOk = () => {
@@ -31,8 +58,28 @@ export default function LocationPages() {
     setIsModalOpen(false);
   };
 
+  const handleFile = (e) => {
+    // console.log(e.target.value);
+    // console.log(e.target.files[0]);
+
+    const file = e.target.files[0];
+    if (file) {
+      const validTypes = ["image/png", "image/jpeg"];
+
+      if (validTypes.includes(file.type)) {
+        setFileValueActivities(e.target.value);
+        setFileDataActivities(file);
+        // console.log("File accepted:", file);
+      } else {
+        alert("Only PNG or JPG files are allowed.");
+        setFileValueActivities("");
+        setFileDataActivities(null);
+      }
+    }
+  };
+
   /* READ CATEGORIES */
-  const getCategories = () => {
+  const getLocations = () => {
     axios
       .get(
         "https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/categories",
@@ -43,7 +90,7 @@ export default function LocationPages() {
         }
       )
       .then((res) => {
-        setCategoriesData(res?.data?.data || []);
+        setLocationsData(res?.data?.data || []);
       })
       .catch((err) => {
         console.log(err.response);
@@ -52,10 +99,68 @@ export default function LocationPages() {
   /* READ CATEGORIES */
 
   /* CREATE CATEGORIES */
+
+  const handleCreate = (e) => {
+    e.preventDefault();
+
+    let urlFileUpload = ""; // This variable should be scoped correctly
+
+    if (fileDataActivities) {
+      // image upload
+      let data = new FormData();
+      data.append("image", fileDataActivities);
+
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: "https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/upload-image",
+        headers: {
+          apiKey: "24405e01-fbc1-45a5-9f5a-be13afcd757c",
+          Authorization: `Bearer ${token}`,
+        },
+        data: data,
+      };
+
+      // Upload the image first, then create the category
+      axios
+        .request(config)
+        .then((response) => {
+          // set value url
+          urlFileUpload = response.data.url; // Get the uploaded image URL
+
+          // Now create the category
+          return axios.post(
+            "https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/create-category",
+            {
+              name: nameLocations,
+              imageUrl: urlFileUpload, // Send as a string
+            },
+            {
+              headers: {
+                apiKey: "24405e01-fbc1-45a5-9f5a-be13afcd757c",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+        })
+        .then((res) => {
+          console.log("Category created:", res.data);
+          // You can fetch locations again or update your state here
+          getLocations(); // Call this function to refresh your data
+          setIsModalOpen(false); // Close the modal after creating
+        })
+        .catch((error) => {
+          console.error("Error creating category:", error.response);
+        });
+    } else {
+      console.error("No file uploaded.");
+    }
+  };
+
   /* CREATE CATEGORIES */
 
   useEffect(() => {
-    getCategories();
+    getLocations();
   }, []);
 
   return (
@@ -72,17 +177,17 @@ export default function LocationPages() {
         </div>
 
         <div className="grid grid-cols-12 gap-4">
-          {categoriesData.map((item, index) => (
+          {locationsData.map((item, index) => (
             <div
               key={index}
               className="col-span-12 md:col-span-6 lg:col-span-3 border p-6 rounded-lg bg-white cursor-pointer"
             >
-              <div onClick={() => showModal("read")}>
+              <div onClick={() => showModal("read", item)}>
                 <h1>{item.name}</h1>
                 <br />
                 <img
                   src={item.imageUrl}
-                  alt="category image"
+                  alt="location image"
                   className="h-[200px] w-auto"
                 />
               </div>
@@ -91,7 +196,7 @@ export default function LocationPages() {
                 <Button
                   type="primary"
                   className="col-span-1 top-5"
-                  onClick={() => showModal("edit")}
+                  onClick={() => showModal("edit", item)}
                 >
                   Edit
                 </Button>
@@ -99,7 +204,7 @@ export default function LocationPages() {
                   type="primary"
                   className="col-span-1 top-5"
                   danger
-                  onClick={() => showModal("delete")}
+                  onClick={() => showModal("delete", item)}
                 >
                   Delete
                 </Button>
@@ -113,10 +218,34 @@ export default function LocationPages() {
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
+        footer={null}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <form onSubmit={handleCreate}>
+          <Input
+            placeholder="Name"
+            value={nameLocations}
+            onChange={(e) => setNameLocations(e.target.value)}
+            disabled={modalData.type === "read"}
+          />
+
+          {modalData.type !== "read" && (
+            <Input
+              type="file"
+              value={fileValueActivities}
+              onChange={handleFile}
+            />
+          )}
+
+          {modalData.type !== "read" && (
+            <Button
+              type="primary"
+              className="col-span-1 top-5"
+              htmlType="submit"
+            >
+              Submit
+            </Button>
+          )}
+        </form>
       </Modal>
     </section>
   );

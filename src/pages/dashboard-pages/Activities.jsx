@@ -38,6 +38,7 @@ export default function ActivitiesPages() {
 
   const showModal = (type = "create", data = {}) => {
     setIsModalOpen(true);
+
     if (type === "create") {
       setModalData((prev) => ({
         ...prev,
