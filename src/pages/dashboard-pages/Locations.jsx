@@ -6,6 +6,7 @@ import { Modal } from "antd";
 import { Input } from "antd";
 import { Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import { Form } from "antd";
 
 export default function LocationPages() {
   const token = localStorage.getItem("access_token");
@@ -32,6 +33,7 @@ export default function LocationPages() {
         title: "Create Locations",
         type: type,
       }));
+      setNameLocations(data?.name || "");
     } else if (type === "edit") {
       setModalData((prev) => ({
         ...prev,
@@ -183,7 +185,7 @@ export default function LocationPages() {
               className="col-span-12 md:col-span-6 lg:col-span-3 border p-6 rounded-lg bg-white cursor-pointer"
             >
               <div onClick={() => showModal("read", item)}>
-                <h1 className="text-lg font-semibold mb-2">{item.name}</h1>
+                <h1>{item.name}</h1>
                 <br />
                 <img
                   src={item.imageUrl}
@@ -221,19 +223,23 @@ export default function LocationPages() {
         footer={null}
       >
         <form onSubmit={handleCreate}>
-          <Input
-            placeholder="Name"
-            value={nameLocations}
-            onChange={(e) => setNameLocations(e.target.value)}
-            disabled={modalData.type === "read"}
-          />
+          <Form.Item label="Category" labelCol={{ span: 24 }}>
+            <Input
+              placeholder="Enter location name..."
+              value={nameLocations}
+              onChange={(e) => setNameLocations(e.target.value)}
+              disabled={modalData.type === "read"}
+            />
+          </Form.Item>
 
           {modalData.type !== "read" && (
-            <Input
-              type="file"
-              value={fileValueActivities}
-              onChange={handleFile}
-            />
+            <Form.Item label="Upload Image" labelCol={{ span: 24 }}>
+              <Input
+                type="file"
+                value={fileValueActivities}
+                onChange={handleFile}
+              />
+            </Form.Item>
           )}
 
           {modalData.type !== "read" && (
