@@ -183,7 +183,7 @@ export default function LocationPages() {
               className="col-span-12 md:col-span-6 lg:col-span-3 border p-6 rounded-lg bg-white cursor-pointer"
             >
               <div onClick={() => showModal("read", item)}>
-                <h1>{item.name}</h1>
+                <h1 className="text-lg font-semibold mb-2">{item.name}</h1>
                 <br />
                 <img
                   src={item.imageUrl}
