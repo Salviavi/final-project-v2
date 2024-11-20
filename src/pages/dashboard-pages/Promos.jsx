@@ -106,7 +106,7 @@ export default function LocationPages() {
     let urlFileUpload = ""; // This variable should be scoped correctly
 
     if (fileDataPromos) {
-      // image upload
+      // Image upload
       let data = new FormData();
       data.append("image", fileDataPromos);
 
@@ -121,41 +121,109 @@ export default function LocationPages() {
         data: data,
       };
 
-      // Upload the image first, then create the promos
       axios
         .request(config)
-        .then((response) => {
-          // set value url
-          urlFileUpload = response.data.url; // Get the uploaded image URL
+        .then((uploadResponse) => {
+          urlFileUpload = uploadResponse.data.url; // Uploaded image URL
 
-          // Create the promos
-          return axios.post(
-            "https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/create-promo",
-            {
-              name: titlePromos,
-              imageUrl: urlFileUpload, // Send as a string
+          // Step 2: Create the promo
+          const promoData = JSON.stringify({
+            title: titlePromos,
+            description: descriptionPromos,
+            terms_condition: termsConditionsPromos, // Match API naming
+            promo_code: codePromos, // Match API naming
+            promo_discount_price: parseFloat(discountPricePromos), // Convert to number
+            minimum_claim_price: parseFloat(minimumClaimPricePromos), // Convert to number
+            imageUrl: urlFileUpload,
+          });
+
+          const createConfig = {
+            method: "post",
+            maxBodyLength: Infinity,
+            url: "https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/create-promo",
+            headers: {
+              apiKey: "24405e01-fbc1-45a5-9f5a-be13afcd757c",
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
             },
-            {
-              headers: {
-                apiKey: "24405e01-fbc1-45a5-9f5a-be13afcd757c",
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+            data: promoData,
+          };
+
+          return axios.request(createConfig);
         })
-        .then((res) => {
-          console.log("Promo created:", res.data);
-          // fetch promos again or update here
-          getPromos(); // Call this function to refresh your data
-          setIsModalOpen(false); // Close the modal after creating
+        .then((createResponse) => {
+          console.log("Promo created successfully:", createResponse.data);
+          // Refresh promos list
+          getPromos();
+          setIsModalOpen(false); // Close modal
         })
         .catch((error) => {
-          console.error("Error creating promos:", error.response);
+          console.error(
+            "Error creating promo:",
+            error.response || error.message
+          );
         });
     } else {
       console.error("No file uploaded.");
     }
   };
+
+  // const handleCreate = (e) => {
+  //   e.preventDefault();
+
+  //   let urlFileUpload = ""; // This variable should be scoped correctly
+
+  //   if (fileDataPromos) {
+  //     // image upload
+  //     let data = new FormData();
+  //     data.append("image", fileDataPromos);
+
+  //     let config = {
+  //       method: "post",
+  //       maxBodyLength: Infinity,
+  //       url: "https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/upload-image",
+  //       headers: {
+  //         apiKey: "24405e01-fbc1-45a5-9f5a-be13afcd757c",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       data: data,
+  //     };
+
+  //     // Upload the image first, then create the promos
+  //     axios
+  //       .request(config)
+  //       .then((response) => {
+  //         // set value url
+  //         urlFileUpload = response.data.url; // Get the uploaded image URL
+
+  //         // Create the promos
+  //         return axios.post(
+  //           "https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/create-promo",
+  //           {
+  //             name: titlePromos,
+  //             imageUrl: urlFileUpload, // Send as a string
+  //           },
+  //           {
+  //             headers: {
+  //               apiKey: "24405e01-fbc1-45a5-9f5a-be13afcd757c",
+  //               Authorization: `Bearer ${token}`,
+  //             },
+  //           }
+  //         );
+  //       })
+  //       .then((res) => {
+  //         console.log("Promo created:", res.data);
+  //         // fetch promos again or update here
+  //         getPromos(); // Call this function to refresh your data
+  //         setIsModalOpen(false); // Close the modal after creating
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error creating promos:", error.response);
+  //       });
+  //   } else {
+  //     console.error("No file uploaded.");
+  //   }
+  // };
 
   /* DELETE PROMOS */
 
