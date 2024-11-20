@@ -66,7 +66,18 @@ export default function ActivitiesPages() {
         title: "Edit Activities",
         type: type,
       }));
-      setTitleActivities(data?.title || "");
+      setCategoriesActivities(categoriesData);
+      setTitleActivities(titleActivities);
+      setDescriptionActivities(descriptionActivities);
+      setPriceActivities(priceActivities);
+      setPriceDiscountActivities(priceDiscountActivities);
+      setRatingActivities(ratingActivities);
+      setTotalReviewsActivities(totalReviewsActivities);
+      setFacilityActivities(facilityActivities);
+      setAddressActivities(addressActivities);
+      setProvinceActivities(provinceActivities);
+      setCityActivities(cityActivities);
+      setLocationsData(locationsData);
     } else if (type === "read") {
       setModalData((prev) => ({ ...prev, title: "Activities", type: type }));
       // showing the map loop content (API data) for the read type
@@ -215,6 +226,88 @@ export default function ActivitiesPages() {
         console.log(error);
       });
   };
+
+  /* Edit Activities */
+
+  const handleEdit = (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+    const activityData = {
+      categoryId: categoriesActivities,
+      title: titleActivities,
+      description: descriptionActivities,
+      price: priceActivities,
+      price_discount: priceDiscountActivities,
+      rating: ratingActivities,
+      total_reviews: totalReviewsActivities,
+      facilities: facilityActivities,
+      address: addressActivities,
+      province: provinceActivities,
+      city: cityActivities,
+      location_maps: mapsActivities,
+      imageUrls: [fileValueActivities],
+    };
+
+    axios
+      .put(
+        `https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/update-activity/${modalData.item.id}`,
+        activityData,
+        {
+          headers: {
+            apiKey: "24405e01-fbc1-45a5-9f5a-be13afcd757c",
+          },
+        }
+      )
+      .then((res) => {
+        // Handle the successful response
+        console.log("Activity updated", res);
+        setModalData({ type: "read", item: res.data }); // Update modal data
+      })
+      .catch((err) => {
+        console.error("Error updating activity", err);
+      });
+  };
+
+  /* DELETE Activities */
+  // const handleDelete = (id) => {
+  //   axios
+  //     .delete(
+  //       `https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/delete-activity/${id}`,
+  //       {
+  //         headers: { apiKey: "24405e01-fbc1-45a5-9f5a-be13afcd757c" },
+  //       }
+  //     )
+  //     .then((res) => {
+  //       console.log("Activity deleted", res);
+  //       setActivitiesData((prevData) =>
+  //         prevData.filter((item) => item.id !== id)
+  //       );
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error deleting activity", err);
+  //     });
+  // };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(
+        `https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/delete-activity/${id}`,
+        {
+          headers: {
+            apiKey: "24405e01-fbc1-45a5-9f5a-be13afcd757c",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // Optionally, you can update the activities data after deletion
+      setActivitiesData((prevData) =>
+        prevData.filter((item) => item.id !== id)
+      );
+      console.log("Activity deleted successfully");
+    } catch (error) {
+      console.error("Error deleting activity", error);
+    }
+  };
+
   /* CREATE Activities */
 
   useEffect(() => {
@@ -264,7 +357,7 @@ export default function ActivitiesPages() {
                   type="primary"
                   danger
                   className="col-span-1"
-                  onClick={() => showModal("delete", item)}
+                  onClick={() => handleDelete(item.id)} // Directly call handleDelete with the item's ID
                 >
                   Delete
                 </Button>
@@ -279,7 +372,9 @@ export default function ActivitiesPages() {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <form onSubmit={handleCreate}>
+        <form
+          onSubmit={modalData.type === "create" ? handleCreate : handleEdit}
+        >
           <Form.Item label="Category" labelCol={{ span: 24 }}>
             <Select
               placeholder="Select a category..."
@@ -292,7 +387,6 @@ export default function ActivitiesPages() {
               disabled={modalData.type === "read"}
             />
           </Form.Item>
-
           <Form.Item label="Title" labelCol={{ span: 24 }}>
             <Input
               id="title"
@@ -302,7 +396,6 @@ export default function ActivitiesPages() {
               disabled={modalData.type === "read"}
             />
           </Form.Item>
-
           <Form.Item label="Description" labelCol={{ span: 24 }}>
             <Input
               placeholder="Fill the description here..."
@@ -311,7 +404,6 @@ export default function ActivitiesPages() {
               disabled={modalData.type === "read"}
             />
           </Form.Item>
-
           <Form.Item label="Price" labelCol={{ span: 24 }}>
             <Input
               placeholder="Fill the price here..."
@@ -320,7 +412,6 @@ export default function ActivitiesPages() {
               disabled={modalData.type === "read"}
             />
           </Form.Item>
-
           <Form.Item label="Price Discount" labelCol={{ span: 24 }}>
             <Input
               placeholder="Fill the price discount here..."
@@ -329,7 +420,6 @@ export default function ActivitiesPages() {
               disabled={modalData.type === "read"}
             />
           </Form.Item>
-
           <Form.Item label="Rating" labelCol={{ span: 24 }}>
             <Input
               placeholder="Fill the rating here..."
@@ -338,7 +428,6 @@ export default function ActivitiesPages() {
               disabled={modalData.type === "read"}
             />
           </Form.Item>
-
           <Form.Item label="Total Reviews" labelCol={{ span: 24 }}>
             <Input
               placeholder="Fill the total reviews here..."
@@ -347,7 +436,6 @@ export default function ActivitiesPages() {
               disabled={modalData.type === "read"}
             />
           </Form.Item>
-
           <Form.Item label="Facilities" labelCol={{ span: 24 }}>
             <Input
               placeholder="Fill the facilities here..."
@@ -356,7 +444,6 @@ export default function ActivitiesPages() {
               disabled={modalData.type === "read"}
             />
           </Form.Item>
-
           <Form.Item label="Address" labelCol={{ span: 24 }}>
             <Input
               placeholder="Fill the address here..."
@@ -365,7 +452,6 @@ export default function ActivitiesPages() {
               disabled={modalData.type === "read"}
             />
           </Form.Item>
-
           <Form.Item label="Province" labelCol={{ span: 24 }}>
             <Input
               placeholder="Fill the province name here..."
@@ -374,7 +460,6 @@ export default function ActivitiesPages() {
               disabled={modalData.type === "read"}
             />
           </Form.Item>
-
           <Form.Item label="City" labelCol={{ span: 24 }}>
             <Input
               placeholder="Fill the city name here..."
@@ -383,7 +468,6 @@ export default function ActivitiesPages() {
               disabled={modalData.type === "read"}
             />
           </Form.Item>
-
           <Form.Item label="Maps" labelCol={{ span: 24 }}>
             <Input
               placeholder="Input map location here..."
@@ -392,7 +476,6 @@ export default function ActivitiesPages() {
               disabled={modalData.type === "read"}
             />
           </Form.Item>
-
           {modalData.type !== "read" && (
             <Input
               type="file"
@@ -401,7 +484,13 @@ export default function ActivitiesPages() {
             />
           )}
 
-          {modalData.type !== "read" && (
+          {modalData.type === "create" && (
+            <Button type="primary" className="col-span-1" htmlType="submit">
+              Submit
+            </Button>
+          )}
+
+          {modalData.type === "edit" && (
             <Button type="primary" className="col-span-1" htmlType="submit">
               Submit
             </Button>
