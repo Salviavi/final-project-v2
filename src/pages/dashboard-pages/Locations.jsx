@@ -20,7 +20,7 @@ export default function LocationPages() {
     type: "create",
   });
 
-  /* State data Categories */
+  /* State data Locations */
   const [nameLocations, setNameLocations] = useState("");
   const [fileValueActivities, setFileValueActivities] = useState("");
   const [fileDataActivities, setFileDataActivities] = useState(null);
@@ -123,14 +123,14 @@ export default function LocationPages() {
         data: data,
       };
 
-      // Upload the image first, then create the category
+      // Upload the image first, then create the locations
       axios
         .request(config)
         .then((response) => {
           // set value url
           urlFileUpload = response.data.url; // Get the uploaded image URL
 
-          // Now create the category
+          // Now create the locations
           return axios.post(
             "https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/create-category",
             {
@@ -159,7 +159,7 @@ export default function LocationPages() {
     }
   };
 
-  /* DELETE CATEGORIES */
+  /* DELETE LOCATIONS */
 
   const handleDelete = async (id) => {
     try {
@@ -182,7 +182,7 @@ export default function LocationPages() {
     }
   };
 
-  /* CREATE CATEGORIES */
+  /* CREATE LOCATIONS */
 
   useEffect(() => {
     getLocations();

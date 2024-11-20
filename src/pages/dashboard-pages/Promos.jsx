@@ -21,6 +21,11 @@ export default function LocationPages() {
 
   /* State data Promos */
   const [titlePromos, setTitlePromos] = useState("");
+  const [descriptionPromos, setDescriptionPromos] = useState("");
+  const [termsConditionsPromos, setTermsContions] = useState("");
+  const [codePromos, setCodePromos] = useState("");
+  const [discountPricePromos, setDiscountPricePromos] = useState("");
+  const [minimumClaimPricePromos, setMinimumClaimPricePromos] = useState("");
   const [fileValuePromos, setFileValuePromos] = useState("");
   const [fileDataPromos, setFileDataPromos] = useState(null);
 
@@ -125,7 +130,7 @@ export default function LocationPages() {
 
           // Create the promos
           return axios.post(
-            "https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/create-category",
+            "https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/create-promo",
             {
               name: titlePromos,
               imageUrl: urlFileUpload, // Send as a string
@@ -166,9 +171,7 @@ export default function LocationPages() {
         }
       );
       //Update the promos data after deletion
-      setActivitiesData((prevData) =>
-        prevData.filter((item) => item.id !== id)
-      );
+      setPromosData((prevData) => prevData.filter((item) => item.id !== id));
       console.log("Promos deleted successfully");
     } catch (error) {
       console.error("Error deleting promos", error);
@@ -241,11 +244,56 @@ export default function LocationPages() {
         footer={null}
       >
         <form onSubmit={handleCreate}>
-          <Form.Item label="Promo" labelCol={{ span: 24 }}>
+          <Form.Item label="Title" labelCol={{ span: 24 }}>
             <Input
               placeholder="Enter promo title..."
               value={titlePromos}
               onChange={(e) => setTitlePromos(e.target.value)}
+              disabled={modalData.type === "read"}
+            />
+          </Form.Item>
+
+          <Form.Item label="Description" labelCol={{ span: 24 }}>
+            <Input
+              placeholder="Enter promo description..."
+              value={descriptionPromos}
+              onChange={(e) => setDescriptionPromos(e.target.value)}
+              disabled={modalData.type === "read"}
+            />
+          </Form.Item>
+
+          <Form.Item label="Terms & Conditions" labelCol={{ span: 24 }}>
+            <Input
+              placeholder="Enter terms & conditions..."
+              value={termsConditionsPromos}
+              onChange={(e) => setTermsContions(e.target.value)}
+              disabled={modalData.type === "read"}
+            />
+          </Form.Item>
+
+          <Form.Item label="Promo Code" labelCol={{ span: 24 }}>
+            <Input
+              placeholder="Enter promo code..."
+              value={codePromos}
+              onChange={(e) => setCodePromos(e.target.value)}
+              disabled={modalData.type === "read"}
+            />
+          </Form.Item>
+
+          <Form.Item label="Promo Discount Price" labelCol={{ span: 24 }}>
+            <Input
+              placeholder="Enter promo discount price..."
+              value={discountPricePromos}
+              onChange={(e) => setDiscountPricePromos(e.target.value)}
+              disabled={modalData.type === "read"}
+            />
+          </Form.Item>
+
+          <Form.Item label="Minimum Claim Price" labelCol={{ span: 24 }}>
+            <Input
+              placeholder="Enter minimum claim price..."
+              value={minimumClaimPricePromos}
+              onChange={(e) => setMinimumClaimPricePromos(e.target.value)}
               disabled={modalData.type === "read"}
             />
           </Form.Item>
