@@ -298,7 +298,7 @@ export default function ActivitiesPages() {
           },
         }
       );
-      // Optionally, you can update the activities data after deletion
+      //Update the activities data after deletion
       setActivitiesData((prevData) =>
         prevData.filter((item) => item.id !== id)
       );

@@ -159,6 +159,29 @@ export default function LocationPages() {
     }
   };
 
+  /* DELETE CATEGORIES */
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(
+        `https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/delete-category/${id}`,
+        {
+          headers: {
+            apiKey: "24405e01-fbc1-45a5-9f5a-be13afcd757c",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      //Update the activities data after deletion
+      setActivitiesData((prevData) =>
+        prevData.filter((item) => item.id !== id)
+      );
+      console.log("Activity deleted successfully");
+    } catch (error) {
+      console.error("Error deleting activity", error);
+    }
+  };
+
   /* CREATE CATEGORIES */
 
   useEffect(() => {
@@ -206,7 +229,7 @@ export default function LocationPages() {
                   type="primary"
                   className="col-span-1 top-5"
                   danger
-                  onClick={() => showModal("delete", item)}
+                  onClick={() => handleDelete(item.id)} // Directly call handleDelete with the item's ID
                 >
                   Delete
                 </Button>
