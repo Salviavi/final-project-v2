@@ -22,7 +22,7 @@ export default function LocationPages() {
   /* State data Promos */
   const [titlePromos, setTitlePromos] = useState("");
   const [descriptionPromos, setDescriptionPromos] = useState("");
-  const [termsConditionsPromos, setTermsContions] = useState("");
+  const [termsConditionsPromos, setTermsConditions] = useState("");
   const [codePromos, setCodePromos] = useState("");
   const [discountPricePromos, setDiscountPricePromos] = useState("");
   const [minimumClaimPricePromos, setMinimumClaimPricePromos] = useState("");
@@ -44,11 +44,23 @@ export default function LocationPages() {
         title: "Edit Promos",
         type: type,
       }));
-      setTitlePromos(data?.name || "");
+      setTitlePromos(titlePromos);
+      setDescriptionPromos(descriptionPromos);
+      setTermsConditions(termsConditionsPromos);
+      setCodePromos(codePromos);
+      setDiscountPricePromos(discountPricePromos);
+      setMinimumClaimPricePromos(minimumClaimPricePromos);
     } else if (type === "read") {
-      setModalData((prev) => ({ ...prev, title: "Locations", type: type }));
-      setTitlePromos(data?.name || "");
-      console.log(setNameLocations);
+      setModalData((prev) => ({ ...prev, title: "Promos", type: type }));
+      // showing the map loop content (API data) for the read type
+      setModalData((prev) => ({ ...prev, title: "Promos", type: type }));
+      // Set state with correct properties from data
+      setTitlePromos(data?.title || "");
+      setDescriptionPromos(data?.description || "");
+      setTermsConditions(data?.terms_condition || "");
+      setCodePromos(data?.promo_code || "");
+      setDiscountPricePromos(data?.promo_discount_price?.toString() || "");
+      setMinimumClaimPricePromos(data?.minimum_claim_price?.toString() || "");
     } else if (type === "delete") {
       setModalData((prev) => ({
         ...prev,
@@ -334,7 +346,7 @@ export default function LocationPages() {
             <Input
               placeholder="Enter terms & conditions..."
               value={termsConditionsPromos}
-              onChange={(e) => setTermsContions(e.target.value)}
+              onChange={(e) => setTermsConditions(e.target.value)}
               disabled={modalData.type === "read"}
             />
           </Form.Item>
