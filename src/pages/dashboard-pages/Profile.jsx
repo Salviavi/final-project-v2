@@ -1,7 +1,7 @@
 import axios from "axios";
 import LayoutDashboard from "../../components/Layout";
 import { useEffect, useState } from "react";
-import { Card, Button, Form } from "antd";
+import { Card, Button, Form, Modal, Input } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 
 export default function ProfilePages() {
@@ -33,7 +33,7 @@ export default function ProfilePages() {
 
   const handleSubmit = (values) => {
     axios
-      .put(
+      .post(
         "https://travel-journal-api-bootcamp.do.dibimbing.id/api/v1/update-profile",
         values,
         {
@@ -46,7 +46,12 @@ export default function ProfilePages() {
       .then((res) => {
         // Update profile data with the new values
         setProfileData(res?.data?.data || profileData);
-        setIsModalVisible(false); // Close modal after successful submission
+
+        // Close modal after successful submission
+        setIsModalVisible(false);
+
+        // Refresh the profile data after updating
+        getProfile();
       })
       .catch((err) => {
         console.error("Error updating profile:", err);
@@ -104,9 +109,15 @@ export default function ProfilePages() {
                 <h2 className="font-bold text-lg mb-2 text-center">
                   {profileData.name}
                 </h2>
-                <p>Email: {profileData.email}</p>
-                <p>Role: {profileData.role}</p>
-                <p>Phone: {profileData.phoneNumber}</p>
+                <p>
+                  <b>Email:</b> {profileData.email}
+                </p>
+                <p>
+                  <b>Role:</b> {profileData.role}
+                </p>
+                <p>
+                  <b>Phone:</b> {profileData.phoneNumber}
+                </p>
               </div>
               {/* Align button within card */}
               <div style={{ textAlign: "left", marginTop: "16px" }}>
@@ -122,6 +133,67 @@ export default function ProfilePages() {
             </div>
           </Card>
         </div>
+
+        {/* Edit Profile Modal */}
+        <Modal
+          title="Edit Profile"
+          open={isModalVisible}
+          onCancel={handleCancel}
+          footer={null}
+          width={600}
+        >
+          <Form
+            form={form}
+            name="edit-profile"
+            onFinish={handleSubmit}
+            initialValues={{
+              name: profileData?.name,
+              email: profileData?.email,
+              profilePictureUrl: profileData?.profilePictureUrl,
+              phoneNumber: profileData?.phoneNumber,
+            }}
+          >
+            <Form.Item
+              label="Name"
+              name="name"
+              rules={[{ required: true, message: "Please input your name!" }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Email"
+              name="email"
+              rules={[
+                { required: true, message: "Please input your email!" },
+                { type: "email", message: "Please enter a valid email!" },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Profile Picture URL"
+              name="profilePictureUrl"
+              rules={[{ required: true, message: "Please input a URL!" }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Phone Number"
+              name="phoneNumber"
+              rules={[
+                { required: true, message: "Please input your phone number!" },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item>
+              <Button type="primary" htmlType="submit" block>
+                Save Changes
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
       </LayoutDashboard>
     </section>
   );
