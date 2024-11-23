@@ -11,6 +11,7 @@ import CreatePromo from "../pages/CreatePromo";
 import PromosPages from "../pages/dashboard-pages/Promos";
 import ActivitiesPages from "../pages/dashboard-pages/Activities";
 import LocationPages from "../pages/dashboard-pages/Locations";
+import ProfilePages from "../pages/dashboard-pages/Profile";
 
 export const routeList = [
   {
@@ -74,12 +75,11 @@ export const routeList = [
       </ProtectedRoute>
     ),
   },
-
   {
-    path: "/create-promo",
+    path: "/profile",
     element: (
       <ProtectedRoute>
-        <CreatePromo />
+        <ProfilePages />
       </ProtectedRoute>
     ),
   },
