@@ -12,6 +12,7 @@ import PromosPages from "../pages/dashboard-pages/Promos";
 import ActivitiesPages from "../pages/dashboard-pages/Activities";
 import LocationPages from "../pages/dashboard-pages/Locations";
 import ProfilePages from "../pages/dashboard-pages/Profile";
+import UsersPages from "../pages/dashboard-pages/Users";
 
 export const routeList = [
   {
@@ -80,6 +81,14 @@ export const routeList = [
     element: (
       <ProtectedRoute>
         <ProfilePages />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/users",
+    element: (
+      <ProtectedRoute>
+        <UsersPages />
       </ProtectedRoute>
     ),
   },
