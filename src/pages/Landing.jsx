@@ -34,7 +34,6 @@ const Landing = () => {
   };
 
   const handleDashboard = () => {
-    localStorage.clear();
     navigate("/dashboard");
   };
 

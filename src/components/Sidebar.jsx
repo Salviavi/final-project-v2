@@ -99,11 +99,11 @@ const Sidebar = () => {
             icon: <PercentageOutlined />,
             label: "Promos",
           },
-          {
-            key: "7",
-            icon: <SettingOutlined />,
-            label: "Setting",
-          },
+          // {
+          //   key: "7",
+          //   icon: <SettingOutlined />,
+          //   label: "Setting",
+          // },
           {
             key: "8",
             icon: <LogoutOutlined />,
